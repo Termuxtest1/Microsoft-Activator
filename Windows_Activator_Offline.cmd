@@ -1,3 +1,28 @@
+@echo off
+:: BatchGotAdmin
+:-------------------------------------
+REM  --> Check for permissions
+>nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
+
+REM --> If error flag set, we do not have admin.
+if '%errorlevel%' NEQ '0' (
+    echo Requesting administrative privileges...
+    goto UACPrompt
+) else ( goto gotAdmin )
+
+:UACPrompt
+    echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\getadmin.vbs"
+    set params = %*:"=""
+    echo UAC.ShellExecute "cmd.exe", "/c %~s0 %params%", "", "runas", 1 >> "%temp%\getadmin.vbs"
+
+    "%temp%\getadmin.vbs"
+    del "%temp%\getadmin.vbs"
+    exit /B
+
+:gotAdmin
+    pushd "%CD%"
+    CD /D "%~dp0"
+
 color 02
 echo "Windows offline Activator Script!"
 echo "made by @termuxtest1"
@@ -37,7 +62,7 @@ IF %no%==5 (
 slmgr /ipk VKK3X-68KWM-X2YGT-QR4M6-4BWMV
     )
 
-slmgr /skms noip.me
+slmgr /skms Kms9.MSGuides.com
 
 slmgr /ato
 
